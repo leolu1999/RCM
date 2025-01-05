@@ -1,8 +1,8 @@
 
-# Traininig ASpanFormer
+# Traininig RCM
 
 ## Dataset setup
-Generally, two parts of data are needed for training ASpanFormer, the original dataset, i.e., ScanNet and MegaDepth, and the offline generated dataset indices. The dataset indices store scenes, image pairs, and other metadata within each dataset used for training/validation/testing. For the MegaDepth dataset, the relative poses between images used for training are directly cached in the indexing files. However, the relative poses of ScanNet image pairs are not stored due to the enormous resulting file size.
+Generally, two parts of data are needed for training RCM, the original dataset, i.e., ScanNet and MegaDepth, and the offline generated dataset indices. The dataset indices store scenes, image pairs, and other metadata within each dataset used for training/validation/testing. For the MegaDepth dataset, the relative poses between images used for training are directly cached in the indexing files. However, the relative poses of ScanNet image pairs are not stored due to the enormous resulting file size.
 
 ### Download datasets
 #### MegaDepth
@@ -37,36 +37,20 @@ tar xf testdata/scannet_test_1500.tar
 
 ### Build the dataset symlinks
 
-We symlink the datasets to the `data` directory under the main ASpanFormer project directory.
+We symlink the datasets to the `data` directory under the main RCM project directory.
 
 ```shell
 # scannet
 # -- # train and test dataset
-ln -s /path/to/scannet_train/* /path/to/ASpanFormer/data/scannet/train
-ln -s /path/to/scannet_test/* /path/to/ASpanFormer/data/scannet/test
+ln -s /path/to/scannet_train/* /path/to/RCM/data/scannet/train
+ln -s /path/to/scannet_test/* /path/to/RCM/data/scannet/test
 # -- # dataset indices
-ln -s /path/to/scannet_indices/* /path/to/ASpanFormer/data/scannet/index
+ln -s /path/to/scannet_indices/* /path/to/RCM/data/scannet/index
 
 # megadepth
 # -- # train and test dataset (train and test share the same dataset)
-ln -sv /path/to/megadepth/phoenix /path/to/megadepth_d2net/Undistorted_SfM /path/to/ASpanFormer/data/megadepth/train
-ln -sv /path/to/megadepth/phoenix /path/to/megadepth_d2net/Undistorted_SfM /path/to/ASpanFormer/data/megadepth/test
+ln -sv /path/to/megadepth/phoenix /path/to/megadepth_d2net/Undistorted_SfM /path/to/RCM/data/megadepth/train
+ln -sv /path/to/megadepth/phoenix /path/to/megadepth_d2net/Undistorted_SfM /path/to/RCM/data/megadepth/test
 # -- # dataset indices
-ln -s /path/to/megadepth_indices/* /path/to/ASpanFormer/data/megadepth/index
-```
-
-
-## Training
-We provide training scripts of ScanNet and MegaDepth. The results in the ASpanFormer paper can be reproduced with 8 v100 GPUs. For a different setup, we scale the learning rate and its warm-up linearly, but the final evaluation results might vary due to the different batch size & learning rate used. Thus the reproduction of results in our paper is not guaranteed.
-
-
-### Training on ScanNet
-``` shell
-scripts/reproduce_train/indoor.sh
-```
-
-
-### Training on MegaDepth
-``` shell
-scripts/reproduce_train/outdoor.sh
+ln -s /path/to/megadepth_indices/* /path/to/RCM/data/megadepth/index
 ```
